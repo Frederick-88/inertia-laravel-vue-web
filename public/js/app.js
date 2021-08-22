@@ -1881,6 +1881,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue */ "./node_modules/@inertiajs/inertia-vue/dist/index.js");
 //
 //
 //
@@ -1888,8 +1889,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Contact"
+  name: "Contact",
+  components: {
+    Link: _inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__.Link
+  }
 });
 
 /***/ }),
@@ -1905,6 +1910,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue */ "./node_modules/@inertiajs/inertia-vue/dist/index.js");
 //
 //
 //
@@ -1943,8 +1949,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Hello",
+  components: {
+    Link: _inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__.Link
+  },
   props: {
     messageList: {
       type: Array,
@@ -1959,15 +1999,54 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      isEdit: false,
+      selectedText: "",
       formInput: {
+        id: -1,
         text: ""
       }
     };
   },
+  watch: {
+    errors: {
+      handler: function handler(val) {
+        console.log("errors: ", val);
+      },
+      deep: true
+    }
+  },
+  computed: {
+    formTitle: function formTitle() {
+      return this.isEdit ? "Edit the ".concat(this.selectedText, " Message Here") : "Add a New Message on the Form Here";
+    }
+  },
   methods: {
-    onSubmit: function onSubmit() {
-      this.$inertia.post("/add-message", this.formInput);
+    resetData: function resetData() {
+      this.selectedText = "";
       this.formInput.text = "";
+      this.isEdit = false;
+    },
+    onSubmit: function onSubmit() {
+      if (this.isEdit) {
+        this.$inertia.put("/update-message", this.formInput);
+      } else {
+        this.$inertia.post("/add-message", this.formInput);
+      }
+
+      this.resetData();
+    },
+    setIsEdit: function setIsEdit(_boolean, selectedText) {
+      this.isEdit = _boolean;
+
+      if (selectedText) {
+        this.selectedText = selectedText.text;
+        this.formInput = {
+          id: selectedText.id,
+          text: selectedText.text
+        };
+      } else {
+        this.resetData();
+      }
     }
   },
   mounted: function mounted() {
@@ -8733,9 +8812,7 @@ var render = function() {
     [
       _c("h4", [_vm._v("Hi There, its the Contact Component")]),
       _vm._v(" "),
-      _c("inertia-link", { attrs: { href: "/hello" } }, [
-        _vm._v("Go to Hello Page")
-      ])
+      _c("Link", { attrs: { href: "/hello" } }, [_vm._v("Go to Hello Page")])
     ],
     1
   )
@@ -8763,89 +8840,160 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container mt-5" }, [
-    _c("h4", [_vm._v("Hi There, its the Hello Component")]),
-    _vm._v(" "),
-    _vm.errors.text
-      ? _c("span", { staticClass: "mt-3 d-block p-3 bg-danger" }, [
-          _vm._v("\n        " + _vm._s(_vm.errors.text) + "\n    ")
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "mt-3 row" }, [
-      _c(
-        "div",
-        { staticClass: "col d-flex flex-wrap" },
-        _vm._l(_vm.messageList, function(message, index) {
-          return _c(
+  return _c(
+    "div",
+    { staticClass: "container mt-5" },
+    [
+      _c("h4", [_vm._v("Hi There, its the Hello Component")]),
+      _vm._v(" "),
+      _c("Link", { attrs: { href: "/contact" } }, [
+        _vm._v("Go to Contact Page")
+      ]),
+      _vm._v(" "),
+      _vm.errors.text || _vm.errors.message
+        ? _c("span", { staticClass: "mt-3 d-block p-3 bg-danger text-white" }, [
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.errors.text ? _vm.errors.text : _vm.errors.message) +
+                "\n    "
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errors.successMessage
+        ? _c(
             "span",
-            {
-              key: index,
-              staticClass: "p-3 bg-primary text-white mt-2 mb-2 w-100"
-            },
+            { staticClass: "mt-3 d-block p-3 bg-success text-white" },
             [
               _vm._v(
-                "\n                " +
-                  _vm._s(index) +
-                  " - " +
-                  _vm._s(message.text) +
-                  "\n            "
+                "\n        " + _vm._s(_vm.errors.successMessage) + "\n    "
               )
             ]
           )
-        }),
-        0
-      ),
+        : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("h4", { staticClass: "mb-3" }, [_vm._v("Fill the Form Here")]),
-        _vm._v(" "),
+      _c("div", { staticClass: "mt-3 row" }, [
         _c(
-          "form",
-          {
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.onSubmit.apply(null, arguments)
-              }
-            }
-          },
-          [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.formInput.text,
-                  expression: "formInput.text"
-                }
-              ],
-              staticClass: "d-block",
-              attrs: { rows: "5" },
-              domProps: { value: _vm.formInput.text },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.formInput, "text", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
+          "div",
+          { staticClass: "col d-flex flex-wrap" },
+          _vm._l(_vm.messageList, function(message, index) {
+            return _c(
+              "span",
               {
-                staticClass: "mt-3 btn btn-success",
-                attrs: { type: "submit" }
+                key: index,
+                staticClass:
+                  "d-flex justify-content-between align-items-center border border-primary bg-light mt-2 mb-2 p-3 w-100"
               },
-              [_vm._v("\n                    Submit\n                ")]
+              [
+                _c("p", { staticClass: "m-0" }, [
+                  _vm._v(_vm._s(index + 1) + " - " + _vm._s(message.text))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "me-2 btn btn-success",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.setIsEdit(true, message)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        Edit\n                    "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        Delete\n                    "
+                      )
+                    ]
+                  )
+                ])
+              ]
             )
-          ]
-        )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col ms-5" }, [
+          _c("h4", { staticClass: "mb-3" }, [_vm._v(_vm._s(_vm.formTitle))]),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.onSubmit.apply(null, arguments)
+                }
+              }
+            },
+            [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.formInput.text,
+                    expression: "formInput.text"
+                  }
+                ],
+                staticClass: "d-block",
+                attrs: { rows: "5" },
+                domProps: { value: _vm.formInput.text },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.formInput, "text", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "mt-3 btn btn-success",
+                  attrs: { type: "submit" }
+                },
+                [_vm._v("\n                    Submit\n                ")]
+              ),
+              _vm._v(" "),
+              _vm.isEdit
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "mt-3 ms-2 btn btn-light",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.setIsEdit(false)
+                        }
+                      }
+                    },
+                    [_vm._v("\n                    Cancel\n                ")]
+                  )
+                : _vm._e()
+            ]
+          )
+        ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

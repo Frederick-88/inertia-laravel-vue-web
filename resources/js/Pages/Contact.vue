@@ -1,13 +1,18 @@
 <template>
     <div>
         <h4>Hi There, its the Contact Component</h4>
-        <inertia-link href="/hello">Go to Hello Page</inertia-link>
+        <Link href="/hello">Go to Hello Page</Link>
     </div>
 </template>
 
 <script>
+import { Link } from "@inertiajs/inertia-vue";
+
 export default {
-    name: "Contact"
+    name: "Contact",
+    components: {
+        Link
+    }
 };
 </script>
 
