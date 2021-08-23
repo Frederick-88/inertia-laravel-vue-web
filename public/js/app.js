@@ -1979,6 +1979,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Hello",
@@ -2017,7 +2021,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     formTitle: function formTitle() {
-      return this.isEdit ? "Edit the ".concat(this.selectedText, " Message Here") : "Add a New Message on the Form Here";
+      return this.isEdit ? "Edit the \"".concat(this.selectedText, "\" Message Here") : "Add a New Message on the Form Here";
     }
   },
   methods: {
@@ -2034,6 +2038,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.resetData();
+    },
+    deleteMessage: function deleteMessage(message) {
+      if (window.confirm("Are you sure to delete ".concat(message.text, "?"))) {
+        // for delete, to receive the id need to use POST.
+        // except if we are going to use controller with 'Route::resources' rather than 'Route::post'
+        this.$inertia.post("/delete-message", {
+          id: message.id
+        });
+      }
     },
     setIsEdit: function setIsEdit(_boolean, selectedText) {
       this.isEdit = _boolean;
@@ -8912,7 +8925,12 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-danger",
-                      attrs: { type: "button" }
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteMessage(message)
+                        }
+                      }
                     },
                     [
                       _vm._v(
