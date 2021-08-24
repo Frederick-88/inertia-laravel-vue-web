@@ -4,6 +4,23 @@
 
 `npm run watch` & `php artisan serve` then open on http://localhost:8000/
 
+#### Personal Notes :
+
+-   modify errors props in component
+    `return Redirect::back()->withErrors(['message' => "Invalid general category ID: [{1}]"]);`
+
+-   do console log in laravel way
+    `return dd($request->all());` or `echo 'test'`
+
+#### Useful Links for Laravel, Vue & Inertia :
+
+-   https://santrikoding.com/laravel-inertia-menampilkan-data
+-   https://www.youtube.com/watch?v=XEW2d2XHkAk
+-   https://laravel.com/docs/8.x/
+-   https://laracasts.com/
+-   https://www.itsolutionstuff.com/post/laravel-8-inertia-js-crud-with-jetstream-tailwind-cssexample.html
+-   https://dev.to/rabeeaali/how-to-deploy-inertia-js-to-heroku-2cdn
+
 ### Laravel Default Readme
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
