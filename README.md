@@ -1,4 +1,4 @@
-## Inertia-Laravel-Vue-App
+### Inertia-Laravel-Vue-App
 
 #### To Run App :
 
