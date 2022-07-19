@@ -1,5 +1,5 @@
 ## Inertia-Laravel-Vue-App
-- sample inertia + laravel + vue training app
+sample inertia + laravel + vue training app
 
 
 #### To Run App :
