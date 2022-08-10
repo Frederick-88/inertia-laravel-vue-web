@@ -1,4 +1,4 @@
-### Inertia-Laravel-Vue-App
+## Inertia-Laravel-Vue-App
 sample inertia + laravel + vue training app
 
 
